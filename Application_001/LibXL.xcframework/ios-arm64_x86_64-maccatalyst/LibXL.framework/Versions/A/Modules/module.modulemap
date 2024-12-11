@@ -1,0 +1,6 @@
+framework module LibXL {
+  umbrella header "libxl.h"
+  export *
+
+  module * { export * }
+}
