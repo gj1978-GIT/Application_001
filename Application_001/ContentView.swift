@@ -1,24 +1,39 @@
-//
-//  ContentView.swift
-//  Application_001
-//
-//  Created by Gaurav Jain on 29/11/24.
-//
-
 import SwiftUI
+import LibXL
+import UIKit
 
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+class ReadWriteText{
+    var DocumentDirURL:URL{
+        let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        return url
     }
+    func fileURL(fileName:String,fileExtension:String)-> URL{
+        return DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+    }
+    func writeFile(writeString:String,fileName:String,fileExtension:String = "txt") {
+        let url = fileURL(fileName: fileName, fileExtension: fileExtension)
+        do{
+            try writeString.write(to: url, atomically: true, encoding: .utf8)
+        } catch let error as NSError {
+            print ("Failed writing to URL: \(String(describing: fileURL)), Error:" + error.localizedDescription)
+        }
+    }
+    func readFile(fileName:String,fileExtension:String = "txt") -> String {
+        var readString = ""
+        let url = fileURL(fileName: fileName, fileExtension: fileExtension)
+        do{
+            readString = try String(contentsOf: url)
+        } catch let error as NSError {
+            //print ("Failed writing to URL: \(fileURL), Error:" + error.localizedDescription)
+            print ("Failed writing to URL: \(String(describing: fileURL)), Error:" + error.localizedDescription)
+        }
+        return readString
+    }
+    
 }
 
-#Preview {
-    ContentView()
-}
+
+    
+
+    
+
